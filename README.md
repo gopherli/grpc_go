@@ -29,8 +29,8 @@ grpc 简单搭建demo
 ```
 2. Go plugins for the protocol compiler 下载：https://grpc.io/docs/languages/go/quickstart/
 ```
-go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26
-go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1
+go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26  --> helloworld.pb.go
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1  --> helloworld_grpc.pb.go
 
 说明：自动生成在$GOPATH/bin目录。
 ```
