@@ -13,7 +13,7 @@ grpc 简单搭建demo
     git clone https://github.com/protocolbuffers/protobuf-go.git ./google.golang.org/protobuf
     git clone https://github.com/golang/protobuf.git ./github.com/golang/protobuf(看情况省略)
 
-(2)问题及解决：Failed to connect to github.com port 443:connection timed out
+(2)问题及解决：Failed to connect to github.com port 443:connection timed out | OpenSSL SSL_read: Connection was reset, errno 10054
     取消验证
         git config --global http.sslVerify "false"
     取消代理（视情况省略）
@@ -62,3 +62,48 @@ greeter_client\main.go:9:2: cannot find package "grpc_go/helloerdan" in any of:
 
 # demo参考
 - https://github.com/grpc/grpc-go/tree/master/examples/helloworld
+
+
+# grpc 接口测试工具
+- 第一步：启动反射服务
+```
+    pb.RegisterYourOwnServer(s, &server{})
+
+    // Register reflection service on gRPC server.
+    reflection.Register(s)
+
+    s.Serve(lis)
+```
+- 第二步：grpcurl手工安装
+```
+go get github.com/fullstorydev/grpcurl
+go install github.com/fullstorydev/grpcurl/cmd/grpcurl
+说明：
+两个命令轮流来安装,遇到443和10054用下面命令解决
+    取消验证
+        git config --global http.sslVerify "false"
+    取消代理（视情况省略）
+        git config --global --unset http.proxy
+        git config --global --unset https.proxy
+```
+- 第三步：使用命令
+```
+前提说明：
+    1.在使用grpcurl时，需要通过-cert和-key参数设置公钥和私钥文件，链接启用了tls协议的服务。
+    2.对于没有没用tls协议的grpc服务，通过-plaintext参数忽略tls证书的验证过程。
+
+常用命令：
+（1）list命令查看服务列表
+grpcurl -plaintext localhost:1234 list
+（2）list子命令查看服务的方法列表
+grpcurl -plaintext localhost:1234 list HelloService.HelloService
+（3）describe子命令查看更详细的描述信息
+grpcurl -plaintext localhost:1234 describe HelloService.HelloService
+（4）describe命令查看参数HelloService.String类型的信息
+grpcurl -plaintext localhost:1234 describe HelloService.String
+（5）-d 参数传入一个json字符串作为输入参数，调用服务方法
+grpcurl -plaintext -d '{"value": "gopher"}' localhost:1234 HelloService.HelloService/Hello
+（6）-d 参数是 @ 则表示从标准输入读取json输入参数，这一般用于比较输入复杂的json数据，也可以用于测试流方法
+grpcurl -plaintext -d @ localhost:1234 HelloService.HelloService/Channel //回车
+{"value": "gopher"} //输入参数
+```
