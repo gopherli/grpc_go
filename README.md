@@ -65,6 +65,7 @@ greeter_client\main.go:9:2: cannot find package "grpc_go/helloerdan" in any of:
 
 
 # grpc 接口测试工具
+- 参考：https://chai2010.cn/advanced-go-programming-book/ch4-rpc/ch4-08-grpcurl.html
 - 第一步：启动反射服务
 ```
     pb.RegisterYourOwnServer(s, &server{})
