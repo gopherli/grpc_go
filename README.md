@@ -21,6 +21,7 @@ grpc 简单搭建demo
         git config --global --unset https.proxy
 
 ```
+- 第三步：go get google.golang.org/grpc（前面两个做好的前提下）
 
 # 安装protoc
 1. Protocol buffer 3 下载：https://grpc.io/docs/protoc-installation/
