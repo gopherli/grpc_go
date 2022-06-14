@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+option objc_class_prefix = "PROTO";
+
+package pb;
+
+// 常量0开始
+enum ActionType{
+  Coding = 0;
+}
+
+// 1开始
+message CodingResponse {
+  string language = 1;
+  int32 time = 2;
+  UserBaseInfo user_base_info = 3;
+  ErrInfo err_info = 4;
+}
+
+message ErrInfo {
+  int32 err_code = 1;
+  string err_message = 2;
+}
+
+message CodingRequest {
+  int32 uid = 1;
+  ActionType action_type = 2;
+}
+
+// 用户基础信息
+message UserBaseInfo {
+  int32 uid = 1;
+  string name = 2;
+  int32 age = 3;
+  int32 sex = 4;
+  string home = 5;
+}
+
+// 服务
+service UserAction{
+  rpc GetUserCodingAction(CodingRequest) returns (CodingResponse){}
+}
